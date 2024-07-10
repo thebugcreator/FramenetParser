@@ -13,6 +13,8 @@ from tqdm import tqdm
 from allennlp.data.tokenizers.spacy_tokenizer import SpacyTokenizer
 from collections import defaultdict
 
+from analogy_util import get_ref_sentence
+
 class FrameNetPreprocess(object):
     def __init__(self):
         self._namespace = {"fn": "http://framenet.icsi.berkeley.edu"}
@@ -57,7 +59,7 @@ class FrameNetPreprocess(object):
             lexical_units: List[str] = []
             frames: List[str] = []
             frame_elements: List[List[Tuple[int, int, str]]] = []
-
+            # TODO: Find the reference sentence and put it in the list accordingly with the frames
             sentence_text = sentence.find("fn:text", self._namespace).text
             annotations = sentence.findall("fn:annotationSet", self._namespace)
             for annotation in annotations:
