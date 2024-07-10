@@ -155,3 +155,7 @@ cython_debug/.fitlog
 .fitconfig
 logs
 .gitignore
+
+
+# Sensitive data
+data/
