@@ -81,7 +81,7 @@ class FrameNetPreprocess(object):
                     # Get the LU, Frame and FEs for this sentence.
                     lex_unit = annotation.attrib["luName"].split(".")[0]
                     # lex_unit = annotation.attrib["luName"]
-                    frame_id = annotation.attrib["frameID"]
+                    frame_id = int(annotation.attrib["frameID"])
                     frame = annotation.attrib["frameName"]
                     if frame == "Test35":  # Bogus frame.
                         continue
