@@ -61,8 +61,8 @@ class FrameNetPreprocess(object):
             lexical_units: List[str] = []
             frames: List[str] = []
             # frame_ids: List[int] = []
-            ref_sentences = List[object]
-            # ref_sentences = List[dict]
+            # ref_sentences = List[object]
+            ref_sentences = []
             frame_elements: List[List[Tuple[int, int, str]]] = []
             # TODO: Find the reference sentence and put it in the list accordingly with the frames
             sentence_text = sentence.find("fn:text", self._namespace).text
