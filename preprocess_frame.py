@@ -144,8 +144,11 @@ class FrameNetPreprocess(object):
                     frame_elements.append(frame_element_list)
                     # frame_ids.append(frame_id)
                     # Find the ref sentence
-                    ref_sentence = get_ref_sentence(sentence_text, frame_id, self.ref_dataset, metric="canberra").to_struct()[0]
-                    ref_sentences.append(ref_sentence)
+                    try:
+                        ref_sentence = get_ref_sentence(sentence_text, frame_id, self.ref_dataset, metric="canberra").to_struct()[0]
+                        ref_sentences.append(ref_sentence)
+                    except:
+                        continue
                 else:
                     for layer in annotation.findall("fn:layer", self._namespace):
                         if layer.attrib["name"] not in self._tokenization_layers:
