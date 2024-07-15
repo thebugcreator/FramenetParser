@@ -61,8 +61,8 @@ class FrameNetPreprocess(object):
             lexical_units: List[str] = []
             frames: List[str] = []
             # frame_ids: List[int] = []
-            # ref_sentences = List[Dict[str, str]]
-            ref_sentences = List[dict]
+            ref_sentences = List[Dict[str, str]]
+            # ref_sentences = List[dict]
             frame_elements: List[List[Tuple[int, int, str]]] = []
             # TODO: Find the reference sentence and put it in the list accordingly with the frames
             sentence_text = sentence.find("fn:text", self._namespace).text
@@ -144,7 +144,7 @@ class FrameNetPreprocess(object):
                     frame_elements.append(frame_element_list)
                     # frame_ids.append(frame_id)
                     # Find the ref sentence
-                    ref_sentence = get_ref_sentence(sentence_text, frame_id, self.ref_dataset, metric="canberra")
+                    ref_sentence = get_ref_sentence(sentence_text, frame_id, self.ref_dataset, metric="canberra").to_struct()[0]
                     ref_sentences.append(ref_sentence)
                 else:
                     for layer in annotation.findall("fn:layer", self._namespace):
