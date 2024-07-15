@@ -365,6 +365,8 @@ class FrameNetPreprocess(object):
         instance['frame_elements'] = frame_element_triplets
         instance['origin_lexical_units'] = lexical_unit_tuples
 
+        instance["ref_sentences"] = ref_sentences
+
         raw_sentence = " ".join(tokens)
         spacy_tokens = self._spacy_tokenizer.tokenize(raw_sentence)
         assert len(spacy_tokens) == len(tokens)
