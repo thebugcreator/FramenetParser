@@ -207,7 +207,10 @@ class FrameNetPreprocess(object):
             frames = [frames[i] for i in sorted_index]
             # frame_ids = [frame_ids[i] for i in sorted_index]
             frame_elements = [frame_elements[i] for i in sorted_index]
-            ref_sentences = [ref_sentences[i] for i in sorted_index]
+            try:
+                ref_sentences = [ref_sentences[i] for i in sorted_index]
+            except:
+                continue
             instance = self.process_sentence(tokens, predicates, lexical_units, frames, frame_elements, ref_sentences)
             
             assert instance["node_types"], "Exist instances without frame-semantic annotations."
