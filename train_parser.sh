@@ -4,7 +4,7 @@ SEEDS=(233)
 train_data_path="data/preprocessed-fn1.7/train.json"
 dev_data_path="data/preprocessed-fn1.7/dev.json"
 test_data_path="data/preprocessed-fn1.7/test.json"
-ontology_path="data/fndata-1.7/"
+ontology_path="data/fndata-1.7/framenet_v17/"
 
 config_file="./training_config/framenet_parser.jsonnet"
 cuda_device="0"
