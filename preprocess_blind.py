@@ -321,7 +321,8 @@ class FrameNetPreprocess(object):
             lexical_unit_tuples.append((predicate, lu))
             child_frame_element_triplets = []
             for frame_element in frame_elements[i]:
-                child_frame_element_triplets.append((frame_tuples[-1], frame_element[0], frame_element[1], frame_element[2]))
+                # child_frame_element_triplets.append((frame_tuples[-1], frame_element[0], frame_element[1], frame_element[2]))
+                child_frame_element_triplets.append((frame_tuples[-1], frame_element[0], frame_element[1], predicate2role_label))
 
             if child_frame_element_triplets is not None:
                 child_frame_element_triplets = list(sorted(child_frame_element_triplets))
