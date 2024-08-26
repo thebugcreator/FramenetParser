@@ -115,7 +115,8 @@ class FrameNetPreprocess(object):
                                 try:
                                     start_token = starts[int(label.attrib["start"])]
                                     end_token = ends[int(label.attrib["end"])]
-                                    frame_element_list.append((start_token, end_token, label.attrib["name"]))
+                                    # frame_element_list.append((start_token, end_token, label.attrib["name"]))
+                                    frame_element_list.append((start_token, end_token, "FE")) # Neutralise every frame element
                                 except:
                                     print("Skipping: Frame-elements annotated for missing tokenization at annotation %s in %s",
                                                 annotation.attrib["ID"], full_text_filename)
@@ -145,7 +146,8 @@ class FrameNetPreprocess(object):
                         for label in layer.findall("fn:label", self._namespace):
                             start = int(label.attrib["start"])
                             end = int(label.attrib["end"])
-                            tokenization[(start, end)] = label.attrib["name"]
+                            # tokenization[(start, end)] = label.attrib["name"]
+                            tokenization[(start, end)] = "FE" # Neutralise the frame element again
 
                         previous_end = -2
                         for start_end in sorted(tokenization):
