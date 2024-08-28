@@ -116,7 +116,7 @@ class FrameNetPreprocess(object):
                                     start_token = starts[int(label.attrib["start"])]
                                     end_token = ends[int(label.attrib["end"])]
                                     # frame_element_list.append((start_token, end_token, label.attrib["name"]))
-                                    frame_element_list.append((start_token, end_token, predicate2role_label)) # Neutralise every frame element
+                                    frame_element_list.append((start_token, end_token, "Frame_Element"))
                                 except:
                                     print("Skipping: Frame-elements annotated for missing tokenization at annotation %s in %s",
                                                 annotation.attrib["ID"], full_text_filename)
@@ -141,7 +141,7 @@ class FrameNetPreprocess(object):
                     for layer in annotation.findall("fn:layer", self._namespace):
                         if layer.attrib["name"] not in self._tokenization_layers:
                             continue
-                        # This is for non-frame data, so let it be
+
                         tokenization = {}
                         for label in layer.findall("fn:label", self._namespace):
                             start = int(label.attrib["start"])
@@ -237,8 +237,7 @@ class FrameNetPreprocess(object):
                          predicates: List[List[Tuple[int, int]]],
                          lexical_units: List[str],
                          frames: List[str],
-                         frame_elements: List[List[Tuple[int, int, str]]],
-                         predicate2role_label="Frame_element"):
+                         frame_elements: List[List[Tuple[int, int, str]]]):
 
         instance = dict()
         instance["sentence"] = tokens
@@ -322,8 +321,7 @@ class FrameNetPreprocess(object):
             lexical_unit_tuples.append((predicate, lu))
             child_frame_element_triplets = []
             for frame_element in frame_elements[i]:
-                # child_frame_element_triplets.append((frame_tuples[-1], frame_element[0], frame_element[1], frame_element[2]))
-                child_frame_element_triplets.append((frame_tuples[-1], frame_element[0], frame_element[1], predicate2role_label))
+                child_frame_element_triplets.append((frame_tuples[-1], frame_element[0], frame_element[1], frame_element[2]))
 
             if child_frame_element_triplets is not None:
                 child_frame_element_triplets = list(sorted(child_frame_element_triplets))
@@ -340,12 +338,12 @@ class FrameNetPreprocess(object):
                 diff = end - start + 1
                 while diff >= self._max_role_width:
                     for target_ix in target_ixs:
-                        predicate2role_edges.append((target_ix[0], target_ix[1], start, start + self._max_role_width - 1, predicate2role_label))
+                        predicate2role_edges.append((target_ix[0], target_ix[1], start, start + self._max_role_width - 1, label))
                     start = start + self._max_role_width
                     diff = end - start + 1
                 if start <= end:
                     for target_ix in target_ixs:
-                        predicate2role_edges.append((target_ix[0], target_ix[1], start, end, predicate2role_label))
+                        predicate2role_edges.append((target_ix[0], target_ix[1], start, end, label))
 
         instance["node_types"] = list(node_types_dict.items())
         instance["node_attrs"] = list(node_attrs_dict.items())
@@ -363,15 +361,15 @@ class FrameNetPreprocess(object):
         return instance
 
 if __name__ == "__main__":
-    # dst15_path = "data/preprocessed-fn1.5"
+    dst15_path = "data/preprocessed-fn1.5"
     dst17_path = "data/preprocessed-fn1.7"
-    # os.makedirs(dst15_path, exist_ok=True)
+    os.makedirs(dst15_path, exist_ok=True)
     os.makedirs(dst17_path, exist_ok=True)
 
     processor = FrameNetPreprocess()
-    # processor.preprocess("data/fndata-1.5/train/fulltext", dst15_path)
-    # processor.preprocess("data/fndata-1.5/dev/fulltext", dst15_path)
-    # processor.preprocess("data/fndata-1.5/test/fulltext", dst15_path)
+    processor.preprocess("data/fndata-1.5/train/fulltext", dst15_path)
+    processor.preprocess("data/fndata-1.5/dev/fulltext", dst15_path)
+    processor.preprocess("data/fndata-1.5/test/fulltext", dst15_path)
     
     processor.preprocess("data/fndata-1.7/train/fulltext", dst17_path)
     processor.preprocess("data/fndata-1.7/dev/fulltext", dst17_path)
