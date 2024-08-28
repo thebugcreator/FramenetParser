@@ -116,7 +116,7 @@ class FrameNetPreprocess(object):
                                     start_token = starts[int(label.attrib["start"])]
                                     end_token = ends[int(label.attrib["end"])]
                                     # frame_element_list.append((start_token, end_token, label.attrib["name"]))
-                                    frame_element_list.append((start_token, end_token, "Frame_Element"))
+                                    frame_element_list.append((start_token, end_token, "Agent"))
                                 except:
                                     print("Skipping: Frame-elements annotated for missing tokenization at annotation %s in %s",
                                                 annotation.attrib["ID"], full_text_filename)
