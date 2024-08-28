@@ -1,4 +1,4 @@
-SEEDS=(233)
+SEEDS=(001)
 
 # Framenet 1.5
 train_data_path="data/preprocessed-fn1.7/train.json"
