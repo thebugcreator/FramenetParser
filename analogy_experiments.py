@@ -1,4 +1,5 @@
 import polars as pl
+import json
 
 def preprocess_test_set(df_path:str, output_path="experiments/inference/"):
     df = pl.read_json(df_path)
@@ -9,9 +10,11 @@ def preprocess_test_set(df_path:str, output_path="experiments/inference/"):
     # Get the python strings ready
     sentences = []
     for item in df_sentence.iter_rows(named=True):
-        sentences.append(f'\{"sentence":{item["text"]}\}')
-    with open(f"{output_path}test.json", "wb") as file:
-        file.write ("\n".join(sentences))
+        instance = {}
+        instance["sentence"] = item["text"]
+        sentences.append(json.dumps(instance))
+    with open(f"{output_path}test.json", "w") as file:
+        file.write("\n".join(sentences))
     return "\n".join(sentences)
 
 
