@@ -21,7 +21,8 @@ class FramenetParserPredictor(Predictor):
         self._tokenizer = SpacyTokenizer(language=language, pos_tags=True)
 
     def predict(self, sentence: str) -> JsonDict:
-        return self.predict_json({"sentence": sentence})
+        # return self.predict_json({"sentence": sentence})
+        return self.predict_dataframe()
 
     @overrides
     def _json_to_instance(self, json_dict: JsonDict):
@@ -68,3 +69,23 @@ class FramenetParserPredictor(Predictor):
             return sanitize({"verbs": [], "words": self._tokenizer.tokenize(inputs["sentence"])})
 
         return self.predict_instances(instances)
+    
+    #------------------- A workaround for predictions with the test set -----------------------
+    
+
+    def predict_dataframe(self, input_path="data/test.json", output_path="prediction_output.pkl"):
+        import polars as pl
+        import pickle
+        inputs = pl.read_json(input_path).unique(subset="sentence_id")
+        all_outputs = []
+        for item in inputs.iter_rows(named=True):
+            tokens = self._tokenizer.tokenize(item["text"])
+            instances = self.tokens_to_instances(tokens)
+            outputs = self._model.forward_on_instances(instances)
+            all_outputs.append(outputs)
+        with open(output_path, "wb") as output:
+            pickle.dump(all_outputs, output, pickle.HIGHEST_PROTOCOL)
+        return "Dump successfully!"
+
+    
+        
