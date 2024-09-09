@@ -21,8 +21,8 @@ class FramenetParserPredictor(Predictor):
         self._tokenizer = SpacyTokenizer(language=language, pos_tags=True)
 
     def predict(self, sentence: str) -> JsonDict:
-        # return self.predict_json({"sentence": sentence})
-        return self.predict_dataframe()
+        return self.predict_json({"sentence": sentence})
+        # return self.predict_dataframe()
 
     @overrides
     def _json_to_instance(self, json_dict: JsonDict):
