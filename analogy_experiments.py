@@ -17,4 +17,4 @@ def preprocess_test_set(df_path:str, output_path="experiments/inference/"):
         file.write("\n".join(sentences))
     return "\n".join(sentences)
 
-
+output = preprocess_test_set("data/test.json")
