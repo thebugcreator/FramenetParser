@@ -36,7 +36,6 @@ def process_eval_result(result_path:str="output_test.json", reference_path:str="
     results = []
     for parser_id, record in enumerate(json_lines):
         tokens = record["words"]
-        frames = record["frames"]
         frame_elements = record["frame_elements"]
         sentence_id = df_reference[parser_id]["sentence_id"][0]
         original_text = df_reference[parser_id]["text"][0]
@@ -64,4 +63,3 @@ def process_eval_result(result_path:str="output_test.json", reference_path:str="
                 )
     return pl.DataFrame(results)
 
-rs = process_eval_result()
