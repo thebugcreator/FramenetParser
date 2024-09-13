@@ -1,6 +1,5 @@
 import polars as pl
 import json
-import numpy as np
 import re
 
 def find_substring_index(input:str, substr:str):
@@ -42,24 +41,22 @@ def process_eval_result(result_path:str="output_test.json", reference_path:str="
         for predicate, (onset, offset), role_name in frame_elements:
             pred_onset, pred_offset = predicate[0][0]
             frame_name = predicate[1]
-            target_text = re.sub(r"' ", "'", " ".join(tokens[pred_onset: pred_offset+1]))
-            element_text = re.sub(r"' ", "'"," ".join(tokens[onset:offset+1]))
-            try:
-                lit_onset, lit_offset = find_substring_index(original_text, element_text)[0]
-            except:
-                lit_onset, lit_offset = 0, 0
+            target_tokens = "#".join(tokens[pred_onset: pred_offset+1])
+            element_tokens = "#".join(tokens[onset:offset+1])
             results.append(
                 {
                     "sentence_id": sentence_id,
-                    "text": original_text,
                     "frame_name": frame_name, 
                     "target_idx": f"{pred_onset},{pred_offset+1}",
-                    "target_text": target_text,
+                    "target_tokens": target_tokens,
+                    "text": original_text,
                     "fe_idx": f"{onset},{offset+1}",
-                    "fe_literal_idx": f"{lit_onset},{lit_offset}",
                     "fe_role": role_name,
-                    "element_text": element_text
+                    "element_tokens": element_tokens,
                 }
                 )
-    return pl.DataFrame(results)
+    df_results = pl.DataFrame(results)
+    df_results_agg = df_results.group_by(["sentence_id","frame_name", "target_idx", "target_tokens"]).agg(df_results.columns[4:])
+    
+    return df_results, df_results_agg
 
